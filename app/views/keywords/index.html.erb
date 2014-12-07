@@ -1,0 +1,42 @@
+<h1>Keywords</h1>
+
+<%=form_tag "/keywords/index" do%>
+        <div class="form form-inline" role="form">
+                <%=text_field_tag "query","",:placeholder=>"Search keywords",:class=>"form-control"%>
+                <%=submit_tag "Search", :class=>"btn btn-primary"%>
+        </div>
+<%end%>
+
+<%=form_tag "/keywords/delete_all" do%>
+<table class="table table-striped">
+	<thead>
+		<tr>
+		        <th></th>
+			<th>Keyword</th>
+			<th>Alias of</th>
+			<th>Category</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<%@keywords.each do |k|%>
+			<tr>
+			        <td><%=check_box_tag "selected[]",k.id%></td>
+				<td><%=k.name%></td>
+				<td><%=k.keyword.name unless k.keyword == nil%></td>
+				<td><%=k.category.name unless k.category==nil%></td>
+				<td>
+					<%=link_to 'edit',:controller=>"keywords",:action=>"edit",:id=>k.id%> | 
+					<%=link_to 'delete',:controller=>"keywords",:action=>"delete", :id=>k.id %>|
+					<%unless k.keyword!=nil%>
+						<%=link_to 'create alias',:controller=>"keywords",:action=>"alias",:id=>k.id%>
+					<%else%>
+						<%=link_to 'create alias',:controller=>"keywords",:action=>"alias",:id=>k.keyword.id%>
+					<%end%>
+				</td>
+			</tr>
+		<%end%>
+	</tbody>
+</table>
+<%=submit_tag "Delete selected",:class=>"btn btn-primary"%>
+<%end%>

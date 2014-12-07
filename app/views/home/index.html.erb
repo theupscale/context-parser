@@ -1,0 +1,89 @@
+<%content_for :menu do%>
+<div class="span3" style="position:absolute;">
+	<div class="well">
+		<ul class="nav nav-list">
+			<li class="nav-header">
+				Categories
+			</li>
+			<li>
+				<%if @selected_context == nil%>
+					All
+				<%else%>
+					<%= link_to "All", :controller=>:home,:action=>:index,:source_id=>@selected_source,:country=>@selected_country%>
+				<%end%>
+			</li>
+			<%@contexts.each do |context|%>
+			<li>
+				<%unless context.id.to_s == @selected_context%>
+					<%= link_to context.name, :controller=>:home,:action=>:index,:context_id=>context.id,:source_id=>@selected_source,:country=>@selected_country%>
+				<%else%>
+					<%= context.name %>
+				<%end%>
+			</li>
+			<%end%>
+		</ul>
+		<hr>
+		<ul class="nav nav-list">
+			<li class="nav-header">
+				Country
+			</li>
+			<li>
+				<%if @selected_country == nil%>
+				All
+				<%else%>
+				<%= link_to "All", :controller=>:home,:action=>:index,:context_id=>@selected_context%>
+				<%end%>
+			</li>
+			<%@countries.each do |country|%>
+			<li>
+				<%if country.to_s == @selected_country%>
+					<%= country %>
+				<%else%>
+				<%= link_to country, :controller=>:home,:action=>:index,:context_id=>@selected_context,:country=>country%>
+				<%end%>
+			</li>
+			<%end%>
+		</ul>
+		<hr>
+		<ul class="nav nav-list">
+			<li class="nav-header">
+				Sources
+			</li>
+			<li>
+				<%if @selected_source == nil%>
+					All
+				<%else%>
+					<%= link_to "All", :controller=>:home,:action=>:index,:context_id=>@selected_context%>
+				<%end%>
+			</li>
+			<%@sources.each do |source|%>
+			<li>
+				<%if source.id.to_s == @selected_source%>
+					<%= source.name %>
+				<%else%>
+					<%= link_to source.name, :controller=>:home,:action=>:index,:context_id=>@selected_context,:source_id=>source.id%>
+				<%end%>
+			</li>
+			<%end%>
+		</ul>
+		<hr>
+	</div>
+	<div class="well">
+		<%=form_tag "/home/archived" do%>
+			<%=date_select("article", "created_on", prompt: { day: 'Select day', month: 'Select month', year: 'Select year' },start_year:2013,end_year:Time.now.year)%>
+			<%=submit_tag "Show Archives"%>
+		<%end%>
+	</div>
+</div>
+<%end%>
+
+<%content_for :content do%>
+<div class="span8">
+	<ul class="thumbnails">
+		<%@top_news.each do |link|%>
+			 <%= render :partial=>"link" , :locals=>{:link=>link}%>
+			 <%= cycle("","<div style='clear:both'></div>".html_safe) %>
+		<%end%>
+	</ul>
+</div>
+<%end%>

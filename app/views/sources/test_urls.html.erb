@@ -1,0 +1,87 @@
+<%=form_tag "/source/test_urls" do %>
+<fieldset>
+	<legend>
+		Test URLs
+	</legend>
+	<p>
+		<label>URL to test</label>
+		<input type="text" name="test_url" value="<%= @url%>"/>
+	</p>
+	<p>
+		<label>Date of the article</label>
+		<input type="text" name="date" value=""/>
+	</p>
+	<p>
+		<input type='submit'  value="check"/>
+	</p>
+</fieldset>
+<%end%>
+
+<%if @dump!=nil%>
+        <%= @date%>
+        <%if @found%>
+        
+                <h2 style="text-decoration: underline">Old Report</h2>
+                <p>
+                	Already Exists = <%= @found%>
+                </p>
+                <p>
+                	Status = <%= @last_status  ? "Processed" : "Error while processing"%>
+                </p>
+                <%unless @last_link == nil%>
+                        <p>
+                        	Earlier Score : <%= @last_link.relevancy_score%>
+                        </p>
+                        <h3>Keywords</h3>
+                        <table>
+                        	<%@last_link.url_keywords.each do |uk|%>
+                                	<tr>
+                                		<td><%= uk.keyword.name%></td>
+                                		<td><b><%= uk.score%></b></td>
+                                	</tr>
+                        	<%end%>
+                        </table>
+                        <h3>Contexts</h3>
+                        <table>
+                        	<%@last_link.url_contexts.each do |uc|%>
+                                	<tr>
+                                		<td><%= uc.keyword_context.name%></td>
+                                		<td><%= uc.score%></td>
+                                	</tr>
+                        	<%end%>
+                        </table>
+                <%end%>
+        <%end%>
+        <%@link = @dump.process%>
+        
+        <br/><hr/></br/>
+        
+        
+        <h2 style="text-decoration: underline">New Report</h2>
+        <div>
+        	<%unless @link==nil%>
+        	<h3>Keywords</h3>
+        	<table>
+        		<%@link.url_keywords.each do |uk|%>
+        		<tr>
+        			<td><%= uk.keyword.name%></td>
+        			<td><b><%= uk.score%></b></td>
+        		</tr>
+        		<%end%>
+        	</table>
+        	<h3>Contexts</h3>
+        	<table>
+        		<%@link.url_contexts.each do |uc|%>
+        		<tr>
+        			<td><%= uc.keyword_context.name%></td>
+        			<td><%= uc.score%></td>
+        		</tr>
+        		<%end%>
+        	</table>
+        	<br/><br/>
+        	<p><b>Final Score : <%= @link.relevancy_score %></b></p>
+        	<%else%>
+        	       Report was nil
+        	<%end%>
+        </div>
+<%end%>

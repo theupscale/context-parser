@@ -1,0 +1,61 @@
+<fieldset>
+        <legend>Go to date</legend>
+        <%=form_tag "/url_dumps/dumps" do%>
+                <input type="text" class="datepicker" name="id" value="<%=@date.strftime('%Y-%m-%d')%>"accept="" />
+                <input class="btn btn-primary" type="submit" value="Go" />
+        <%end%>
+</fieldset>
+
+<fieldset>
+	<legend>Search for an article on <%="#{@date.strftime('%Y-%m-%d')}"%></legend>
+	<%=form_tag "/url_dumps/dumps/#{@date.strftime('%Y-%m-%d')}" do%>
+		<input type="hidden" name="page" value="0" />
+		<input type="text" name="query" value=""accept="" />
+		<input type="submit" value="Search" />
+	<%end%>	
+</fieldset>
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Etag</th>
+			<th>Title</th>
+			<th>Source</th>
+			<th>Processed</th>
+			<th>Time</th>
+			<th>Keywords</th>
+			<th>Context</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<%@dumps = UrlLinkDump.where("date(published_on) = ?",@date).order("published_on desc").limit(20).offset(20*@page)%>
+		<%@dumps = @dumps.where("title like ?","%#{params[:query]}%")%>
+		<%@dumps.each do |u|%>
+		<tr style="<%=cycle('background-color:#eee','')%>">
+			<td><%=u.etag%></td>
+			<td><%=link_to u.title,u.url%></td>
+			<td><%=u.source.name unless u.source == nil%></td>
+			<td><%=u.processed%></td>
+			<td><%=u.published_on.strftime("%b %e, %l:%M %p") unless u.published_on == nil%></td>
+			<% l = UrlLink.find_by_url(u.url)%>
+			<% if l==nil || l.blank?%>
+				<td>None</td>
+				<td>None</td>
+			<%else%>
+				<td><%=l.keywords.collect{|k| k.name}.join(", ")%></td>
+				<td><%=l.keyword_contexts.collect{|k| k.name}.join(", ")%></td>
+			<%end%>
+			<td>
+				<%=link_to "delete link","/url_dumps/delete_link/#{l.id}",:class=>"btn btn-primary" unless l==nil%>
+				<%=link_to "reprocess","/url_dumps/reprocess/#{u.id}",:class=>"btn btn-primary" %>
+			</td>
+		</tr>
+		<%end%>
+	</tbody>
+</table>
+<div class="col-lg-4 col-lg-offset-4">
+	<%=link_to "next", "/url_dumps/dumps/#{@date.strftime('%Y-%m-%d')}?page=#{@page+1}",:class=>"btn btn-primary" %> | 
+	<%=link_to "previous", "/url_dumps/dumps/#{@date.strftime('%Y-%m-%d')}?page=#{@page-1}",:class=>"btn btn-primary"  unless @page < 1%>
+</div>
+

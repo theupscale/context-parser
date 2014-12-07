@@ -1,0 +1,28 @@
+<h1>All Contexts</h1>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+		        <th>ID</th>
+			<th>Name</th>
+			<th>Weight</th>
+			<th>Relevant</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<%KeywordContext.order("name asc").each do |c|%>
+			<tr class="<%=!c.is_relevant ? 'warning' : '' %>">
+			        <td><%=c.id%></td>
+				<td><%=c.name%></td>
+				<td><%=c.weight%></td>
+				<td><%=c.is_relevant%></td>
+				<td>
+					<%=link_to "edit", :controller=>:keyword_contexts,:action=>:edit,:id=>c.id %> |
+					<%=link_to "delete",:action=>:delete, :id=>c.id,:method=>:delete%>|
+					<%=link_to "create rules", :action=>"create_rule",:id=>c.id%>
+				</td>
+			</tr>
+		<%end%>
+	</tbody>
+</table>

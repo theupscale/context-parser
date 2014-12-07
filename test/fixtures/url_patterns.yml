@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  source_id: 
+  pattern: 
+  content_xpath: 
+  : 
+
+two:
+  source_id: 
+  pattern: 
+  content_xpath: 
+  : 

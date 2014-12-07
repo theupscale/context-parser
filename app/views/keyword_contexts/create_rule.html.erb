@@ -1,0 +1,79 @@
+<h2>Add Rule</h2>
+<%= form_for @keyword_rule,:html=>{:class=>"form-horizontal"} do |f|%>
+        <fieldset>
+        	<legend>
+        		Create Rule for <%= @context.name%>
+        	</legend>
+        	<div class="form-group">
+        		<%= f.hidden_field :keyword_context_id%>
+        		<label class="col-lg-2 control-label">Keyword</label>
+        		<div class="col-lg-10">
+        			<%= f.select :keyword_id, 
+        				grouped_options_for_select(Category.order("name asc").collect {|c| [c.name,Keyword.where("keyword_id is null and category_id = ?",c.id).order("name asc").collect {|k| [k.name,k.id]}]},:selected=>@keyword_rule.keyword_id)%>
+        		</div>
+        	</div>
+        	<div class="form-group">
+        		<label class="col-lg-2 control-label">Weight</label>
+        		<div class="col-lg-10">
+        			<%= f.text_field :weight, :class=>"form-control"%>
+        		</div>
+        	</div>
+        	<div class="form-group">
+        		<label class="col-lg-2 control-label">Proportion</label>
+        		<div class="col-lg-10">
+        			<%= f.select :proportion, 1..10, :html=>{:class=>"form-control"} %>
+        		</div>
+        	</div>
+        	<div class="form-group">
+        		<label class="col-lg-2 control-label">Mode</label>
+        		<div class="col-lg-10">
+        			<%= f.select :mode, ["MUST_HAVE","ATLEAST_THIS","MUST_NOT","SHOULD_NOT"]%>
+        		</div>
+        	</div>
+        	<div class="form-group">
+        		<div class="col-lg-10">
+        			<label class="col-lg-2 control-label"></label>
+        			<%= f.submit "save"%>
+        		</div>
+        	</div>
+        </fieldset>
+<%end%>
+
+<h2>Existing Keyword Rules</h2>
+
+<%= form_tag "/keyword_contexts/create_rule/#{@context.id}" do%>
+        <div class="form form-inline" role="form">
+                <%=text_field_tag "query","",:placeholder=>"Search Rules",:class=>"form-control"%>
+                <%=submit_tag "Search", :class=>"btn btn-primary"%>
+        </div>
+<%end%>
+
+<%=form_tag "/keyword_contexts/delete_all/#{@context.id}" do%>
+        <table class="table table-bordered table-striped">
+        	<thead>
+        		<tr>
+        		        <th></th>
+        			<th>Keyword</th>
+        			<th>Mode</th>
+        			<th>Weight</th>
+        			<th>Proportion</th>
+        			<th>Actions</th>
+        		</tr>
+        	</thead>
+        	<tbody>
+        		<%@rules.each do |kr|%>
+        		<tr>
+        		        <td>
+        		                <%=check_box_tag "selected[]",kr.id%>
+        		        </td>
+        			<td><%= kr.keyword.name%></td>
+        			<td><%= kr.mode.gsub("_"," ").capitalize%></td>
+        			<td><%= kr.weight%></td>
+        			<td><%= kr.proportion if kr.mode == "MUST_HAVE"%></td>
+        			<td><%= link_to "delete", {:controller=>:keyword_rules,:action=>"delete",:id=>kr.id} %></td>
+        		</tr>
+        		<%end%>
+        	</tbody>
+        </table>
+        <%=submit_tag "Delete selected",:class=>"btn btn-primary"%>
+<%end%>

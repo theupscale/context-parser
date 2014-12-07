@@ -1,0 +1,21 @@
+<h1>Rss Feeds for <%= @source.domain_name%></h1>
+
+<%=semantic_form_for @rss do |f|%>
+        <%=f.inputs :name=>"RSS feed" do%>
+                <%= f.input :source %>
+                <%= f.input :url %>
+        <%end%>
+        <%= f.actions %>
+<%end%>
+
+<ul>
+	<%@source.rss_urls.each do |rss|%>
+	<li>
+		<%= rss.url%> <%= link_to "edit",:controller=>:rss_urls, :action=>:edit,:id=>rss.id%> |
+		<%= link_to "test", :action=>:test_rss,:id=>rss.id%> |
+		<%= link_to "delete", :action=>:delete, :id=>rss.id %>
+
+	</li>
+	<%end%>
+</ul>
+

@@ -1,0 +1,18 @@
+<!--[if it IE 9]
+<script src="http://htmlshiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<%= stylesheet_link_tag "bootstrap", :media => "all" %>
+<%= stylesheet_link_tag "bootstrap-responsive", :media => "responsive" %>
+<%= stylesheet_link_tag "home"%>
+<%= javascript_include_tag "jquery-1.9.1.min" %>
+<%= javascript_include_tag "bootstrap" %>
+<%= javascript_include_tag "jquery.leanModal.min"%>
+<script type="text/javascript">
+	$(function() {
+		$('a[rel*=leanModal]').leanModal({ top : 200, closeButton: ".modal_close" });		
+	});
+</script>
+
+
+
+

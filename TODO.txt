@@ -1,0 +1,7 @@
+3. Process url dumps, add to url links if relevant.		2 hours
+4. Process url links, add_contexts and keywords.		2 hours
+5. Create a UI CSS for admin.							3 hours
+6. Create a UI for the search page. 					6 hours
+7. Add date parsing to URL pattern						2 hours
+
+Total work  : 	18 hours. 

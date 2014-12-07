@@ -1,0 +1,36 @@
+
+<%if flash[:message]!=nil%>
+         <div class="alert alert-danger">
+                <%=flash[:message]%>                
+        </div>
+<%end%>
+
+<%= form_tag "/admin/login" do%>
+        <div class="margin-top-50">
+                <div class="form form-horizontal" role="form">
+                        <div class="form-group">
+                                <label class="control-label col-lg-2">Username </label>
+                                <div class="col-lg-2">
+                                        <%=text_field_tag "username","",:class=>"form-control input-lg"%>
+                                </div>
+                        </div>
+                        </br/>
+                         <div class="form-group">
+                                <label class="control-label col-lg-2">Password </label>
+                                <div class="col-lg-2">
+                                        <%=password_field_tag "password","",:class=>"form-control input-lg"%>
+                                </div>
+                        </div>
+                        <br/>
+                        <div class="form-group">
+                                <label class="control-label col-lg-2"></label>
+                                <div class="col-lg-2 col-lg-offset-2">
+                                        <%=submit_tag "Login",:class=>"btn btn-primary"%>
+                                </div>
+                        </div>
+                </div>
+        </div>
+<%end%>
+  
+
+  

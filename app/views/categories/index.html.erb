@@ -1,0 +1,28 @@
+<h1>All Categories</h1>
+<%=form_tag "/categories/delete_all" do%>
+        <table class="table table-striped table-hover">
+        	<thead>
+        		<tr>
+        		        <th></th>
+        			<th>Name</th>
+        			<th>Actions</th>
+        		</tr>
+        	</thead>
+        	<tbody>
+        		<%Category.all.each do |c|%>
+        			<tr>
+        			        <td>
+        			                <%=check_box_tag "selected[]",c.id%>
+        			        </td>
+        				<td>
+        					<%= link_to c.name, :controller=>:categories,:action=>:edit,:id=>c.id%>
+        				</td>
+        				<td>
+        					<%=link_to "delete",:action=>:delete, :id=>c.id,:method=>:delete%>
+        				</td>
+        			</tr>
+        		<%end%>
+        	</tbody>	
+        </table>
+        <%=submit_tag "Delete selected",:class=>"btn btn-primary"%>
+<%end%>

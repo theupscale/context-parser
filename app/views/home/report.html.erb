@@ -1,0 +1,66 @@
+<div id="test" class="well">
+	<%=form_tag "/home/report" do%>
+	<fieldset>
+		<legend>Select Date Range</legend>
+		<p>
+			<label>Start Date</label>
+			<%=date_select "article","start_date", default: (@start_date==nil ? Date.today - 1.month : @start_date )%>
+		</p>
+		<p>
+			<label>End Date</label>
+			<%=date_select "article","end_date", default: (@end_date==nil ? Date.today : @end_date )%>
+		</p>
+		<p>
+			<%=submit_tag "Search"%>
+		</p>
+	</fieldset>
+	<%end%>
+</div>
+
+<div class="row">
+        <div class="span6">
+                <%unless @sources_report==nil%>
+                        <table class="table table-bordered table-striped">
+                                <thead>
+                                        <tr>
+                                                <th>Source</th>
+                                                <th>Article Count</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                <%@sources_report.keys.each do |k|%>
+                                        <tr>
+                                                <td><%=k%></td>
+                                                <td>
+                                                        <%=@sources_report[k]%> <%="article".pluralize(@sources_report[k])%>
+                                                </td>
+                                        </tr>   
+                                <%end%>
+                                </tbody>
+                        </table>
+                <%end%>
+        </div>
+        <div class="span6">
+                <%unless@context_report==nil%>
+                        <table class="table table-bordered table-striped">
+                                <thead>
+                                        <tr>
+                                                <th>Topic</th>
+                                                <th>Article Count</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                <%@context_report.keys.each do |k|%>
+                                        <tr>
+                                                <td><%=k%></td>
+                                                <td><%=@context_report[k]%> <%="article".pluralize(@context_report[k])%></td>
+                                        </tr>   
+                                <%end%>
+                                </tbody>
+                        </table>
+                <%end%>
+        </div>
+</div>
+
+        	
+

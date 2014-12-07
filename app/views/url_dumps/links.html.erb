@@ -1,0 +1,64 @@
+<fieldset>
+        <legend>Go to date</legend>
+        <%=form_tag "/url_dumps/links" do%>
+                <input type="text" class="datepicker" name="id" value="<%=@date.strftime('%Y-%m-%d')%>"accept="" />
+                <input type="submit" class="btn btn-primary" value="Go" />
+        <%end%>
+</fieldset>
+
+<fieldset>
+	<legend>Search for an article on <%=@date.strftime('%Y-%m-%d')%></legend>
+	<%=form_tag "/url_dumps/links/#{@date}" do%>
+		<input type="hidden" name="page" value="0" />
+		<input type="text" name="query" value=""accept="" />
+		<input type="submit" class="btn btn-primary" value="Search" />
+	<%end%>	
+</fieldset>
+
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>Title</th>
+			<th>Source</th>
+			<th>Time</th>
+			<th>Keywords</th>
+			<th>Contexts</th>
+			<th>Score</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<%@links = UrlLink.where("date(published_on) = ? and relevancy_score > ?",@date,150).order("relevancy_score desc").limit(20).offset(20*@page)%>
+		<%@links = @links.where("title like ?","%#{params[:query]}%")%>
+		<%@links.each do |u|%>
+		<tr>
+			<td>
+				<a href="<%=u.url%>"><%=u.title%></a>
+			</td>
+			<td>
+				<%=u.source.name unless u.source == nil%>
+			</td>
+			<td>
+				<%=u.published_on%>
+			</td>
+			<td>
+				<%=u.url_keywords.map {|uk| "#{uk.keyword.name}(#{uk.score})" unless uk.keyword==nil}.join(", ") %>
+			</td>
+			<td>
+				<%=u.url_contexts.map {|uk| "#{uk.keyword_context.name}(#{uk.score})" unless uk.keyword_context==nil}.join(", ") %>
+			</td>
+			<td>
+				<%=u.relevancy_score %>
+			</td>
+			<td>
+				<%=link_to "delete","/url_dumps/delete_link/#{u.id}"%>
+			</td>
+		</tr>
+		<%end%>
+	</tbody>
+</table>
+<p>
+	<%=link_to "next", "/url_dumps/links/#{@date}?page=#{@page+1}",:class=>"btn btn-primary" unless @links.empty?%> | 
+	<%=link_to "previous", "/url_dumps/links/#{@date}?page=#{@page-1}",:class=>"btn btn-primary"  unless @page < 1%>
+</p>
+

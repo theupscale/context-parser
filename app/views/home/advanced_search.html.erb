@@ -1,0 +1,51 @@
+<%content_for :content do%>
+<div id="test" class="span12">
+	<p>
+		<%=form_tag "/home/search",:target=>"_self" do |f|%>
+		<fieldset>
+
+			<h3>Advanced Search</h3	>
+			<hr>
+			</legend>
+			<div class="span6">
+				<div class="span4">
+					<h3>Find News Matching</h3>
+					<input style="display: inline-block;min-width: 100;min-height:30;" class="input-xxlarge" type="text" name="query" />
+				</div>
+				
+				<div class="span4">
+					<h3>Topic of interest</h3>
+					<%=select_tag "context_id",options_for_select(KeywordContext.where("is_relevant=1").order("weight desc").map {|u| [u.name,u.id]}),:prompt=>"Select"%>
+				</div>
+
+				<div class="span4">
+					<h3>Filter Through Country</h3>
+					<%Source.all_countries.each do |c|%>
+					<div style="margin-left:2px;">
+						<%= check_box_tag "country_names[]",c,:checked=>true%> <span><%= c%></span>
+					</div>
+					<%end%>
+				</div>
+				<div class="span6">
+					<h3>Source</h3>
+					<%Source.all.each do |s|%>
+					<div style="margin-left:2px;">
+						<%= check_box_tag "source_ids[]", s.id%> <span><%= s.name%></span>
+					</div>
+					<%end%>
+				</div>
+				<div class="span8">
+					<h3>And Between</h3>
+					<%= select_date Date.today-1.month,:prefix=>"from"%>
+					<br/>
+					<%= select_date Date.today,:prefix=>"to"%>
+				</div>
+				<div class="span12">
+					<%= submit_tag "Search"%>
+				</div>
+		</fieldset>
+		<%end%>
+	</p>
+</div>
+</div>
+<%end%>

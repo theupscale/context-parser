@@ -1,0 +1,25 @@
+<h1>Sources</h1>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Country</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<%Source.all.each do |source|%>
+		<tr class="<%= source.enabled ? "" :  "warning"%>">
+			<td><%=source.name%></td>
+			<td><%=source.country%></td>
+			<td>
+				<%=link_to "Edit", :action=>:edit,:id=>source.id%>  |
+				<%=link_to source.enabled ? "Disable" : "Enable", "/sources/disable/#{source.id}"%> | 
+				<%=link_to "Delete", :action=>:delete,:id=>source.id,:method=>:delete%> |
+				<%=link_to "Url Patterns  (#{source.url_patterns.count})", :controller=>:url_patterns,:action=>:index,:source_id=>source.id%> |
+				<%=link_to "Rss Feeds (#{source.rss_urls.count})", :controller=>:rss_urls,:action=>:index,:source_id=>source.id%>
+			</td>
+		</tr>
+		<%end%>
+	</tbody>
+</table>

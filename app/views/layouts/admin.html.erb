@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>DRDO</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<%= stylesheet_link_tag "/assets/home"%>
+		<%= stylesheet_link_tag "/datetimepicker/css/bootstrap-datetimepicker.min.css"%>
+	</head>
+	<body>
+	        <%if session[:logged_in]%>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a>
+					<div class="brand">
+						<a href="/"></a>
+					</div>
+					<div class="nav-collapse">
+						<ul class="nav">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Keyword Contexts <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="/keyword_contexts">Manage All</a>
+									</li>
+									<li>
+										<a href="/keyword_contexts/new">Create New</a>
+									</li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sources <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="/sources">Manage All</a>
+									</li>
+									<li>
+										<a href="/sources/new">Create New</a>
+									</li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Keywords <b class="carat"></b></a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="/keywords">Manage All</a>
+									</li>
+									<li>
+										<a href="/keywords/new">Create New</a>
+									</li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Logs <b class="carat"></b></a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="/url_dumps/dumps">URL Dumps</a>
+									</li>
+									<li>
+										<a href="/url_dumps/links">URL Links</a>
+									</li>
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories <b class="carat"></b></a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="/categories">Manage All</a>
+									</li>
+									<li>
+										<a href="/categories/new">Create New</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<a href="/home/report">Report</a>
+							</li>
+							<li>
+								<a href="#"><%= Date.today.strftime("%d %b %Y")%></a>
+							</li>
+							<li class="active">
+                                                                <a href="/admin/logout"><i class="icon-home icon-white"></i> Logout</a>
+                                                        </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<%end%>
+
+		<div class="well" style="height:140px;">
+			<div class="span4" style="margin:20px;">
+				<img src="/assets/drdo.jpg">
+			</div>
+				
+		</div>
+                <div class="container">
+                        <%= yield%>        
+                </div>
+		<script src="http://code.jquery.com/jquery.js"></script>
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="http://leanmodal.finelysliced.com.au/js/jquery.leanModal.min.js"></script>
+                <script type="text/javascript" src="/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+		<script type="text/javascript">
+		       $(document).ready(function(){
+		              $(".datepicker").datetimepicker({
+		                      format: 'yyyy-MM-dd',
+		                      pickTime:false
+		              });       
+		       });
+		       
+			$(function() {
+				$('a[rel*=leanModal]').leanModal({
+					top : 200,
+					closeButton : ".modal_close"
+				});
+			});
+		</script>
+	</body>
+</html>
+

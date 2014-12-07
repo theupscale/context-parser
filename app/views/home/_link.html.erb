@@ -1,0 +1,31 @@
+<li class="span3">
+	<div class="thumbnail">
+		<%unless (link.image_url == nil || link.image_url.empty?)%>
+			<img  alt="300x200" style="width: 300px; height: 200px;" src="<%= link.image_url%>">
+		<%end%>
+		<div class="caption">
+			<h4><%= link.title%></h4>
+			<p>
+				<%= link.description%>
+			</p>
+			
+			<p>
+				<%kcs = []%>
+				<%link.url_contexts.each do |uc|%>
+					<%if (uc.keyword_context != nil && uc.keyword_context.is_relevant && (uc.score > 0.2*link.relevancy_score))%>
+						<%kcs << uc.keyword_context.name%>
+					<%end%>
+				<%end%>
+				<%=kcs.join(" | ")%>
+			</p>
+			
+			<hr>
+			<p>
+				<i class="icon-calendar"></i><b> <%= link.published_on.strftime("%d %b %Y") unless link.published_on == nil%> | By: <%= link.source.name%></b>
+			</p>
+			<p>
+				<a href="<%= link.url%>" target="_blank" class="btn btn-success">Read More</a>
+			</p>
+		</div>
+	</div>
+</li>

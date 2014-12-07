@@ -1,0 +1,26 @@
+<h1>Test Parser</h1>
+<%= form_tag "/keyword_contexts/do_test" do %>
+	<fieldset>
+		<legend>Enter Input Text to parse</legend>
+		<textarea name="test_input" ><%=@text%></textarea>
+		<input type="submit" value="Parse"></input>
+	</fieldset>
+<%end%>
+
+<h3>Density report</h3>
+<%if @report!=nil%>
+	<%@report.keys.each do |keyword|%>
+		<p>
+			<%=keyword%> -- <%=@report[keyword]%>
+		</p>
+	<%end%>
+<%end%>
+
+<h3>Context Relevancy report</h3>
+<%if @context_report!=nil%>
+	<%@context_report.keys.each do |keyword|%>
+		<p>
+			<%=keyword%> -- <%=@context_report[keyword]%>
+		</p>
+	<%end%>
+<%end%>

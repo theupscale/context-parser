@@ -1,0 +1,17 @@
+<%=semantic_form_for @url_pattern do |f|%>
+	<%=f.inputs%>
+	<%=f.action :submit%>
+<%end%>
+
+<div>
+	<%if params[:source_id]==nil%>
+		<%@sources = UrlPattern.all%>
+	<%else%>
+		<%@sources = Source.find(params[:source_id]).url_patterns%>
+	<%end%>
+	<%@sources.each do |pattern|%>
+	<p>
+		<%=pattern.pattern%> <%=link_to "edit", :action=>:edit,:id=>pattern.id%>
+	</p>
+	<%end%>
+</div>
