@@ -16,9 +16,9 @@ class AdminController < ApplicationController
 		@username = params[:username]
 		@password = params[:password]
 		if (@username == "" || @password == "")
-			flash[:message] = "Please enter your username and password"
+			flash[:message] = "Please enter your login creds"
 		else
-			if (@username=="admin" && @password=="upscale123")
+			if (@username=="admin" && @password=="admin")
 				session[:logged_in] = true
 				redirect_to :controller=>:home, :action=>:report
 			else
